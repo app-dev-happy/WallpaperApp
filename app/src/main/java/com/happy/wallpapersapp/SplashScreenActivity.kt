@@ -36,7 +36,7 @@ class SplashScreenActivity : AppCompatActivity() {
         Handler().postDelayed({
             val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)
             startActivity(intent)
-            overridePendingTransition(R.anim.fragment_fade_enter,R.anim.fragment_fade_exit)
+            overridePendingTransition(R.anim.fragment_open_enter,R.anim.fragment_close_exit)
             finish()
         },SPLASH_TIME_OUT.toLong())
     }
