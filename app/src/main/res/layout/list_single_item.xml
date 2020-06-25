@@ -28,6 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
    <View
+       android:id="@+id/gradient"
        android:layout_width="match_parent"
        android:layout_height="45dp"
        android:background="@drawable/gradient"

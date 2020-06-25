@@ -7,7 +7,6 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <!--status-bar & navigation bar color theme-->
-
         <item name="android:statusBarColor">@color/colorBackground</item>
         <item name="android:windowLightStatusBar">false</item>
 

@@ -25,11 +25,13 @@ class WallpapersListAdapter(var wallpapersList : List<WallpapersModel>, private 
             ).into(itemView.list_single_image)*/
 
             itemView.artist_name.text = wallpapers.name
+            itemView.gradient.visibility = View.GONE
             Picasso.get()
                 .load(wallpapers.thumbnail)
                 .into(itemView.list_single_image, object : Callback {
                     override fun onSuccess() {
                         itemView.list_single_progress.visibility = View.GONE
+                        itemView.gradient.visibility = View.VISIBLE
                     }
                     override fun onError(e: Exception?) {
 
