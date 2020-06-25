@@ -24,6 +24,7 @@ class WallpapersListAdapter(var wallpapersList : List<WallpapersModel>, private 
                 )
             ).into(itemView.list_single_image)*/
 
+            itemView.artist_name.text = wallpapers.name
             Picasso.get()
                 .load(wallpapers.thumbnail)
                 .into(itemView.list_single_image, object : Callback {

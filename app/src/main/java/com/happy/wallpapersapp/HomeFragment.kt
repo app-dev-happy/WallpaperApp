@@ -55,7 +55,7 @@ class HomeFragment : Fragment(), (WallpapersModel) -> Unit {
 
         //Init Recyclerview
         wallpapers_list_view.setHasFixedSize(true)
-        wallpapers_list_view.layoutManager = GridLayoutManager(context, 3)
+        wallpapers_list_view.layoutManager = GridLayoutManager(context, 2)
         wallpapers_list_view.adapter = wallpapersListAdapter
 
         //reached bottom of the page

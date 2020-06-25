@@ -39,8 +39,6 @@ class WallpapersViewModel : ViewModel() {
                         wallpapersList.value = wallpapersList.value!!.plus(result.toObjects(WallpapersModel::class.java))
                     }
 
-
-
                     //get the last document
                     val lastItem : DocumentSnapshot = result.documents[result.size() - 1]
                     firebaseRepositories.lastVisisble = lastItem
