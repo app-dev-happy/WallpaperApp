@@ -2,6 +2,8 @@ package com.happy.wallpapersapp
 
 import android.app.WallpaperManager
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.os.Build
@@ -10,19 +12,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.happy.wallpapersapp.databinding.FragmentDetailBinding
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail.*
+import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+
 
 class DetailFragment : Fragment(), View.OnClickListener {
 
