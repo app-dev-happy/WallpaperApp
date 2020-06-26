@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".DetailFragment">
 
     <ProgressBar
         android:id="@+id/list_single_progress"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:indeterminate="true"
         android:elevation="1dp"
         android:foregroundGravity="center"
@@ -31,24 +37,172 @@
         android:scaleType="centerCrop"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/set_as_text"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="Set as"
+        android:foreground="?attr/selectableItemBackground"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:paddingTop="18dp"
+        android:textSize="18sp"
+        android:fontFamily="@font/nunito_sans_semibold"
+        android:background="@drawable/gradient"
+        app:layout_constraintBottom_toTopOf="@id/set_options"/>
+
+    <View
+        android:id="@+id/divider_line"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="0.6dp"
+        android:background="#99FFFFFF"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintTop_toBottomOf="@id/set_as_text"
+        app:layout_constraintBottom_toTopOf="@id/set_options"/>
+
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="80dp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       android:id="@+id/set_options"
+       android:background="@drawable/dark_gradient"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       android:visibility="visible">
+
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:id="@+id/lockscreen_btn"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="?attr/selectableItemBackgroundBorderless"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintBottom_toBottomOf="parent">
+
+       <androidx.appcompat.widget.AppCompatImageView
+           android:layout_width="30dp"
+           android:layout_height="30dp"
+           android:id="@+id/lockscreen_icon"
+           android:src="@drawable/ic_screen_lock"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintBottom_toBottomOf="parent"
+           android:layout_marginStart="10dp"
+           />
+
+       <androidx.appcompat.widget.AppCompatTextView
+           android:id="@+id/lockscreen_text"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="4dp"
+           android:fontFamily="@font/nunito_sans"
+           android:text="Lockscreen"
+           android:textColor="@color/white"
+           android:textSize="14sp"
+           app:layout_constraintBottom_toBottomOf="@id/lockscreen_icon"
+           app:layout_constraintStart_toEndOf="@id/lockscreen_icon"
+           app:layout_constraintTop_toTopOf="@id/lockscreen_icon" />
+
+       </androidx.constraintlayout.widget.ConstraintLayout>
+
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:background="?attr/selectableItemBackgroundBorderless"
+           android:id="@+id/download_btn"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintBottom_toBottomOf="parent">
+
+           <androidx.appcompat.widget.AppCompatImageView
+               android:layout_width="24dp"
+               android:layout_height="30dp"
+               android:id="@+id/download_icon"
+               android:src="@drawable/ic_download"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintEnd_toStartOf="@id/download_text"
+               app:layout_constraintBottom_toBottomOf="parent"
+               android:layout_marginEnd="8dp"
+               />
+
+           <androidx.appcompat.widget.AppCompatTextView
+               android:id="@+id/download_text"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginEnd="12dp"
+               android:fontFamily="@font/nunito_sans"
+               android:text="Download"
+               android:textColor="@color/white"
+               android:textSize="14sp"
+               app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintTop_toTopOf="parent" />
+
+       </androidx.constraintlayout.widget.ConstraintLayout>
+
+       <androidx.constraintlayout.widget.ConstraintLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           app:layout_constraintTop_toTopOf="parent"
+           android:background="?attr/selectableItemBackgroundBorderless"
+           android:id="@+id/wallpaper_btn"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent">
+
+           <androidx.appcompat.widget.AppCompatTextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/wallpaper_text"
+               android:fontFamily="@font/nunito_sans"
+               android:text="Wallpaper"
+               android:textColor="@color/white"
+               android:textSize="14sp"
+               app:layout_constraintTop_toTopOf="parent"
+               app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               />
+
+           <androidx.appcompat.widget.AppCompatImageView
+               android:layout_width="24dp"
+               android:layout_height="26dp"
+               android:id="@+id/wallpaper_icon"
+               android:src="@drawable/ic_wallpaper"
+               app:layout_constraintTop_toTopOf="@id/wallpaper_text"
+               app:layout_constraintBottom_toBottomOf="@id/wallpaper_text"
+               app:layout_constraintEnd_toStartOf="@id/wallpaper_text"
+               android:layout_marginEnd="6dp"/>
+
+
+
+       </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--<androidx.appcompat.widget.AppCompatButton
         android:id="@+id/detail_set_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="26dp"
         android:background="@drawable/primary_btn_bg"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:text="Set Wallpaper"
         android:textAlignment="center"
+        android:elevation="6dp"
         android:textAllCaps="true"
         android:textColor="@color/colorLight"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-
+        app:layout_constraintStart_toStartOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

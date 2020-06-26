@@ -1,46 +1,72 @@
 package com.happy.wallpapersapp
 
-import android.app.DownloadManager
 import android.app.WallpaperManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toBitmap
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import com.happy.wallpapersapp.databinding.FragmentDetailBinding
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail.*
-import kotlinx.android.synthetic.main.list_single_item.view.*
-import java.sql.Time
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 
 class DetailFragment : Fragment(), View.OnClickListener {
 
+    lateinit var fragmentDetailBinding: FragmentDetailBinding
+    internal lateinit var view: View
+
     private var image : String? = null
+
     private var wallpaper: WallpapersModel = WallpapersModel()
+
+    private var isOptionVisible : Boolean? = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        fragmentDetailBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
+        fragmentDetailBinding.executePendingBindings()
+        view = fragmentDetailBinding.root
+        initListners()
+        return view
+    }
+
+    fun initListners(){
+        //set on btn click
+        fragmentDetailBinding.wallpaperBtn.setOnClickListener(this)
+        fragmentDetailBinding.lockscreenBtn.setOnClickListener(this)
+        fragmentDetailBinding.downloadBtn.setOnClickListener(this)
+        fragmentDetailBinding.setAsText.setOnClickListener(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         list_single_progress.visibility = View.VISIBLE
+        //set_options.visibility = View.VISIBLE
+        var h = fragmentDetailBinding.setOptions.layoutParams
+        h.height = 1
+        fragmentDetailBinding.setOptions.layoutParams = h
+        fragmentDetailBinding.lockscreenIcon.visibility = View.GONE
+        fragmentDetailBinding.downloadIcon.visibility = View.GONE
         image = DetailFragmentArgs.fromBundle(requireArguments()).wallpaperImage
-
-
-        //set on btn click
-        detail_set_btn.setOnClickListener(this)
-
     }
 
     override fun onStart() {
@@ -60,18 +86,59 @@ class DetailFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onClick(p0: View?) {
-        setWallPaper()
+    override fun onClick(view: View?) {
+        when(view?.id){
+            R.id.download_btn -> {
+                downloadWallpaper()
+            }
+            R.id.lockscreen_btn -> {
+                setLockscreen()
+            }
+            R.id.wallpaper_btn -> {
+                setWallPaper()
+            }
+            R.id.set_as_text -> {
+                toggleOptions()
+            }
+        }
+    }
+
+    fun toggleOptions(){
+        if (!isOptionVisible!!){
+            var h = fragmentDetailBinding.setOptions.layoutParams
+            h.height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD
+            fragmentDetailBinding.setOptions.layoutParams = h
+            fragmentDetailBinding.lockscreenIcon.visibility = View.VISIBLE
+            fragmentDetailBinding.downloadIcon.visibility = View.VISIBLE
+            fragmentDetailBinding.dividerLine.visibility = View.VISIBLE
+            fragmentDetailBinding.setOptions.setPadding(0,45,0,45)
+            isOptionVisible = true
+        } else {
+            var h = fragmentDetailBinding.setOptions.layoutParams
+            h.height = 1
+            fragmentDetailBinding.setOptions.layoutParams = h
+            fragmentDetailBinding.lockscreenIcon.visibility = View.GONE
+            fragmentDetailBinding.downloadIcon.visibility = View.GONE
+            fragmentDetailBinding.dividerLine.visibility = View.GONE
+            isOptionVisible = false
+        }
     }
 
     fun setWallPaper(){
-
-        detail_set_btn.isEnabled = false
-        detail_set_btn.text = "Wallpaper Set"
-        detail_set_btn.setTextColor(resources.getColor(R.color.black))
-
         val bitmap : Bitmap = detail_image.drawable.toBitmap()
         val task :SetWallpaperTask = SetWallpaperTask(requireContext(), bitmap)
+        task.execute(true)
+    }
+
+    fun setLockscreen(){
+        val bitmap : Bitmap = detail_image.drawable.toBitmap()
+        val task :SetLockscreenTask = SetLockscreenTask(requireContext(), bitmap)
+        task.execute(true)
+    }
+
+    fun downloadWallpaper(){
+        val bitmap : Bitmap = detail_image.drawable.toBitmap()
+        val task :DownloadWallpaperTask = DownloadWallpaperTask(requireContext(), bitmap, wallpaper.name + "_" + wallpaper.date)
         task.execute(true)
     }
 
@@ -82,6 +149,35 @@ class DetailFragment : Fragment(), View.OnClickListener {
                 val wallpaperManager : WallpaperManager = WallpaperManager.getInstance(context)
                 wallpaperManager.setBitmap(bitmap)
                 return "Wallpaper Set"
+            }
+        }
+        class DownloadWallpaperTask internal constructor(private val context : Context, private val bitmap : Bitmap, private val picName : String) :
+            AsyncTask<Boolean, String, String>() {
+            override fun doInBackground(vararg p0: Boolean?): String {
+                var fos: FileOutputStream? = null
+                try {
+                    fos = context.openFileOutput(picName, Context.MODE_PRIVATE)
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                } catch (e: FileNotFoundException) {
+                    e.printStackTrace()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                } finally {
+                    fos?.close()
+                }
+                return "Download Wallpaper"
+            }
+        }
+        class SetLockscreenTask internal constructor(private val context : Context, private val bitmap : Bitmap) :
+            AsyncTask<Boolean, String, String>() {
+            override fun doInBackground(vararg p0: Boolean?): String {
+                val wallpaperManager : WallpaperManager = WallpaperManager.getInstance(context)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK)
+                } else {
+                    Toast.makeText(context, "Your Android Version does not support . \n Please Download the image and then set the lockscreen.", Toast.LENGTH_LONG).show()
+                }
+                return "Lockscreen Set"
             }
         }
     }

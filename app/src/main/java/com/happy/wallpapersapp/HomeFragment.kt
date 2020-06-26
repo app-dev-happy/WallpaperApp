@@ -42,7 +42,7 @@ class HomeFragment : Fragment(), (WallpapersModel) -> Unit {
         (activity as AppCompatActivity).setSupportActionBar(main_toolbar)
 
         val actionBar = (activity as AppCompatActivity).supportActionBar
-        actionBar!!.title = "Fire Wallpapers"
+        actionBar!!.title = "Free Wallpapers"
 
         //Setup Nav controller
         navController = Navigation.findNavController(view)
@@ -75,6 +75,7 @@ class HomeFragment : Fragment(), (WallpapersModel) -> Unit {
 
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -86,9 +87,8 @@ class HomeFragment : Fragment(), (WallpapersModel) -> Unit {
             //loading complete
             isLoading = false
         })
-
-
     }
+
 
     override fun invoke(wallpaper: WallpapersModel) {
         //clicked on wallpaper item from the list, navigate to details fragment

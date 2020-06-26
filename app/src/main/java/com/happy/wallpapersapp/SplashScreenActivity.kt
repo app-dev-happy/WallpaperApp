@@ -65,6 +65,6 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     companion object {
-        var SPLASH_TIME_OUT = 2000
+        var SPLASH_TIME_OUT = 4000
     }
 }
