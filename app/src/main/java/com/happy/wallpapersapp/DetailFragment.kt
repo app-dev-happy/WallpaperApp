@@ -2,12 +2,12 @@ package com.happy.wallpapersapp
 
 import android.app.WallpaperManager
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -156,16 +156,22 @@ class DetailFragment : Fragment(), View.OnClickListener {
         class DownloadWallpaperTask internal constructor(private val context : Context, private val bitmap : Bitmap, private val picName : String) :
             AsyncTask<Boolean, String, String>() {
             override fun doInBackground(vararg p0: Boolean?): String {
-                var fos: FileOutputStream? = null
+                var outStream: FileOutputStream? = null
                 try {
-                    fos = context.openFileOutput(picName, Context.MODE_PRIVATE)
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                    val dataDirectory: File = Environment.getDataDirectory()
+                    val dir = File(dataDirectory.absolutePath + "/camtest")
+                    dir.mkdirs()
+                    val fileName = picName +".jpg"
+                    val outFile = File(dir, fileName)
+                    outStream = FileOutputStream(outFile)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream)
+                    outStream.flush()
+                    outStream.close()
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
                 } catch (e: IOException) {
                     e.printStackTrace()
                 } finally {
-                    fos?.close()
                 }
                 return "Download Wallpaper"
             }
