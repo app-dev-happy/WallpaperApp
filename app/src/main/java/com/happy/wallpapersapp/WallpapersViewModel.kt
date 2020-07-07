@@ -42,11 +42,10 @@ class WallpapersViewModel : ViewModel() {
                     //get the last document
                     val lastItem : DocumentSnapshot = result.documents[result.size() - 1]
                     firebaseRepositories.lastVisisble = lastItem
-
                 }
 
             }else {
-                Log.d("ViewModelError", "Error ${it.exception!!.message} ")
+                Log.d("WallpapersViewModelErr", "Error ${it.exception!!.message} ")
             }
         }
     }

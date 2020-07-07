@@ -6,8 +6,7 @@ import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,26 +15,22 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.android.volley.RequestQueue
 import com.happy.wallpapersapp.databinding.FragmentDetailBinding
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail.*
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
 
 
 class DetailFragment : Fragment(), View.OnClickListener {
 
     lateinit var fragmentDetailBinding: FragmentDetailBinding
     internal lateinit var view: View
-
     private var image : String? = null
-
     private var wallpaper: WallpapersModel = WallpapersModel()
-
     private var isOptionVisible : Boolean? = false
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,12 +51,14 @@ class DetailFragment : Fragment(), View.OnClickListener {
         fragmentDetailBinding.lockscreenBtn.setOnClickListener(this)
         fragmentDetailBinding.downloadBtn.setOnClickListener(this)
         fragmentDetailBinding.setAsText.setOnClickListener(this)
+        fragmentDetailBinding.successText.setOnClickListener(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         list_single_progress.visibility = View.VISIBLE
+        fragmentDetailBinding.successDialog.visibility = View.GONE
         //set_options.visibility = View.VISIBLE
         var h = fragmentDetailBinding.setOptions.layoutParams
         h.height = 1
@@ -102,6 +99,10 @@ class DetailFragment : Fragment(), View.OnClickListener {
             R.id.set_as_text -> {
                 toggleOptions()
             }
+            R.id.success_text -> {
+                fragmentDetailBinding.successDialog.visibility = View.GONE
+                fragmentDetailBinding.setOptions.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -130,21 +131,35 @@ class DetailFragment : Fragment(), View.OnClickListener {
         val bitmap : Bitmap = detail_image.drawable.toBitmap()
         val task :SetWallpaperTask = SetWallpaperTask(requireContext(), bitmap)
         task.execute(true)
+        successScreen()
     }
 
     fun setLockscreen(){
         val bitmap : Bitmap = detail_image.drawable.toBitmap()
         val task :SetLockscreenTask = SetLockscreenTask(requireContext(), bitmap)
         task.execute(true)
+        successScreen()
+
     }
 
     fun downloadWallpaper(){
         val bitmap : Bitmap = detail_image.drawable.toBitmap()
         val task :DownloadWallpaperTask = DownloadWallpaperTask(requireContext(), bitmap, wallpaper.name + "_" + wallpaper.date)
         task.execute(true)
+        successScreen()
+    }
+
+    fun successScreen(){
+
+        fragmentDetailBinding.successDialog.visibility = View.VISIBLE
+        fragmentDetailBinding.setOptions.visibility = View.GONE
+        Handler().postDelayed({
+            fragmentDetailBinding.successAnimation.playAnimation()
+        },300)
     }
 
     companion object{
+
         class SetWallpaperTask internal constructor(private val context : Context, private val bitmap : Bitmap) :
             AsyncTask<Boolean, String, String>() {
             override fun doInBackground(vararg p0: Boolean?): String {
@@ -156,23 +171,6 @@ class DetailFragment : Fragment(), View.OnClickListener {
         class DownloadWallpaperTask internal constructor(private val context : Context, private val bitmap : Bitmap, private val picName : String) :
             AsyncTask<Boolean, String, String>() {
             override fun doInBackground(vararg p0: Boolean?): String {
-                var outStream: FileOutputStream? = null
-                try {
-                    val dataDirectory: File = Environment.getDataDirectory()
-                    val dir = File(dataDirectory.absolutePath + "/camtest")
-                    dir.mkdirs()
-                    val fileName = picName +".jpg"
-                    val outFile = File(dir, fileName)
-                    outStream = FileOutputStream(outFile)
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream)
-                    outStream.flush()
-                    outStream.close()
-                } catch (e: FileNotFoundException) {
-                    e.printStackTrace()
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                } finally {
-                }
                 return "Download Wallpaper"
             }
         }
@@ -182,6 +180,7 @@ class DetailFragment : Fragment(), View.OnClickListener {
                 val wallpaperManager : WallpaperManager = WallpaperManager.getInstance(context)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     wallpaperManager.setBitmap(bitmap, null, true, WallpaperManager.FLAG_LOCK)
+                    //Toast.makeText(context, "Lockscreen set.", Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(context, "Your Android Version does not support . \n Please Download the image and then set the lockscreen.", Toast.LENGTH_LONG).show()
                 }

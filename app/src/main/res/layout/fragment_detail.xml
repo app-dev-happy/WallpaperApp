@@ -2,7 +2,6 @@
 
 <layout>
 
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,6 +10,64 @@
     android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".DetailFragment">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/success_dialog"
+        android:visibility="gone"
+        android:elevation="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_transparent70_black">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/success_card"
+            app:cardElevation="30dp"
+            app:cardBackgroundColor="@color/success_color"
+            app:cardCornerRadius="20dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginTop="100dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/box">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:id="@+id/success_animation"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:lottie_fileName="success.json"
+                    app:lottie_loop="false"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/success_text"
+                    android:text="Success"
+                    android:textColor="@color/colorBackground"
+                    app:layout_constraintTop_toBottomOf="@id/success_animation"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
     <ProgressBar
         android:id="@+id/list_single_progress"
@@ -176,33 +233,10 @@
                app:layout_constraintEnd_toStartOf="@id/wallpaper_text"
                android:layout_marginEnd="6dp"/>
 
-
-
        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!--<androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/detail_set_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="26dp"
-        android:background="@drawable/primary_btn_bg"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="Set Wallpaper"
-        android:textAlignment="center"
-        android:elevation="6dp"
-        android:textAllCaps="true"
-        android:textColor="@color/colorLight"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </layout>

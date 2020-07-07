@@ -3,10 +3,7 @@ package com.happy.wallpapersapp
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 
 class FirebaseRepositories {
     private var firebaseAuth : FirebaseAuth = FirebaseAuth.getInstance()
@@ -26,7 +23,7 @@ class FirebaseRepositories {
             return firebaseFirestore
                 .collection("Wallpapers")
                 .orderBy("date", Query.Direction.DESCENDING)
-                .limit(9)
+                .limit(8)
                 .get()
         } else{
             //load next page
@@ -37,7 +34,5 @@ class FirebaseRepositories {
                 .limit(pageSize)
                 .get()
         }
-
-
     }
 }
