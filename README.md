@@ -1,2 +1,2 @@
 # WallpaperApp
-Wallpaper App with Firestore Firebase + MVVM Architecture + AdMobs
+Wallpaper App with Google AdMobs
