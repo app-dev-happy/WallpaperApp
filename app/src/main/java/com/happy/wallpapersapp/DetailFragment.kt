@@ -15,7 +15,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.android.volley.RequestQueue
 import com.happy.wallpapersapp.databinding.FragmentDetailBinding
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
