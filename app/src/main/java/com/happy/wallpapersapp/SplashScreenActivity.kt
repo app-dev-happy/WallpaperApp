@@ -50,15 +50,14 @@ class SplashScreenActivity : AppCompatActivity() {
         when (currentHour) {
             in 8..14 -> {
                 animJson = "morning.json"
-            }
-            in 15..19 -> {
-                animJson = "evening.json"
-            }
-            else -> {
-                animJson = "night.json"
-            }
-        }
-
+         }
+         in 15..19 -> {
+             animJson = "evening.json"
+         }
+         else -> {
+             animJson = "night.json"
+         }
+     }
         animationView?.setAnimation(animJson)
         animationView?.playAnimation()
 
