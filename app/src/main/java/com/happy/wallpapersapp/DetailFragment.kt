@@ -131,6 +131,7 @@ class DetailFragment : Fragment(), View.OnClickListener {
         val task :SetWallpaperTask = SetWallpaperTask(requireContext(), bitmap)
         task.execute(true)
         successScreen()
+        fragmentDetailBinding.successAnimation.clearAnimation()
     }
 
     fun setLockscreen(){
@@ -138,7 +139,7 @@ class DetailFragment : Fragment(), View.OnClickListener {
         val task :SetLockscreenTask = SetLockscreenTask(requireContext(), bitmap)
         task.execute(true)
         successScreen()
-
+        fragmentDetailBinding.successAnimation.clearAnimation()
     }
 
     fun downloadWallpaper(){
@@ -146,10 +147,10 @@ class DetailFragment : Fragment(), View.OnClickListener {
         val task :DownloadWallpaperTask = DownloadWallpaperTask(requireContext(), bitmap, wallpaper.name + "_" + wallpaper.date)
         task.execute(true)
         successScreen()
+        fragmentDetailBinding.successAnimation.clearAnimation()
     }
 
     fun successScreen(){
-
         fragmentDetailBinding.successDialog.visibility = View.VISIBLE
         fragmentDetailBinding.setOptions.visibility = View.GONE
         Handler().postDelayed({
